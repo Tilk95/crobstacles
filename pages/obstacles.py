@@ -25,23 +25,24 @@ def voirEnteteObstacle(p_liste_tags,p_error):
 
     _text =f'#### NOM OBSTACLE : :{_color}[{returnTagValue("NOM",p_liste_tags)}]'
     st.markdown(_text)
-    _text = f"ID METIER : :blue[{returnTagValue("IDMETIER",p_liste_tags)}]"
-    _text += f" | ANCIENNETE : :blue[{returnTagValue("ANCIENNETE",p_liste_tags)}]"
-    _text += f" | NATURE OBSTACLE : :blue[{returnTagValue("NATUREOBST",p_liste_tags)}]"
-    _text += f" | NOMBRE DE DEBOUCHES : :blue[{returnTagValue("NBRDEBOUCHE",p_liste_tags)}]"
-    _text += f" | NOMBRE DE SOMMETS : :blue[{returnTagValue("NBRSOMMET",p_liste_tags)}]"
+    _text = f"ID METIER : :blue[{returnTagValue('IDMETIER',p_liste_tags)}]"
+
+    _text += f" | ANCIENNETE : :blue[{returnTagValue('ANCIENNETE',p_liste_tags)}]"
+    _text += f" | NATURE OBSTACLE : :blue[{returnTagValue('NATUREOBST',p_liste_tags)}]"
+    _text += f" | NOMBRE DE DEBOUCHES : :blue[{returnTagValue('NBRDEBOUCHE',p_liste_tags)}]"
+    _text += f" | NOMBRE DE SOMMETS : :blue[{returnTagValue('NBRSOMMET',p_liste_tags)}]"
 
     st.markdown(_text)
 
-    _text = f"DE LA LIGNE : :blue[{returnTagValue("DE LA LIGNE",p_liste_tags)}]"
-    _text += f" | PKDEBUT : :blue[{returnTagValue("PKDEBUT",p_liste_tags)}]"
-    _text += f" | PKFIN : :blue[{returnTagValue("PKFIN",p_liste_tags)}]"
+    _text = f"DE LA LIGNE : :blue[{returnTagValue('DE LA LIGNE',p_liste_tags)}]"
+    _text += f" | PKDEBUT : :blue[{returnTagValue('PKDEBUT',p_liste_tags)}]"
+    _text += f" | PKFIN : :blue[{returnTagValue('PKFIN',p_liste_tags)}]"
     st.markdown(_text)
 
-    _text = f"DE LA VOIE : :blue[{returnTagValue("DE LA VOIE",p_liste_tags)}]"
-    _text += f" | LIBELLE VOIE : :blue[{returnTagValue("LIBELLE VOIE",p_liste_tags)}]"
-    _text += f" | NOM LOCAL VOIE : :blue[{returnTagValue("NOM LOCAL VOIE",p_liste_tags)}]"
-    _text += f" | VOIE DE SERVICE : :blue[{returnTagValue("VOIE DE SERVICE",p_liste_tags)}]"
+    _text = f"DE LA VOIE : :blue[{returnTagValue('DE LA VOIE',p_liste_tags)}]"
+    _text += f" | LIBELLE VOIE : :blue[{returnTagValue('LIBELLE VOIE',p_liste_tags)}]"
+    _text += f" | NOM LOCAL VOIE : :blue[{returnTagValue('NOM LOCAL VOIE',p_liste_tags)}]"
+    _text += f" | VOIE DE SERVICE : :blue[{returnTagValue('VOIE DE SERVICE',p_liste_tags)}]"
 
     st.markdown(_text)
 
