@@ -113,14 +113,14 @@ def controleChamp(p_champName,p_champValue,p_champLenMax,p_champOBLIGATOIRE,
     if len(_temp) > 0:
         if len(_temp) > p_champLenMax:
             _error = True
-            _error_string = f"[{p_champName}] Champ limité à {p_champLenMax} caractère(s){_liste_autorisee}."
+            _error_string = f"[CHAMP][{p_champName}] Champ limité à {p_champLenMax} caractère(s){_liste_autorisee}."
         else:
             if _temp not in p_champListeValeursAutorisees and len(p_champListeValeursAutorisees)>0 :
                 _error = True
-                _error_string = f"[{p_champName}] Valeur '{_temp}' non autorisée{_liste_autorisee}."
+                _error_string = f"[CHAMP][{p_champName}] Valeur '{_temp}' non autorisée{_liste_autorisee}."
     else:
         if p_champOBLIGATOIRE:
-            _error_string = (f"[{p_champName}] Champ obligatoire non renseigné{_liste_autorisee}.")
+            _error_string = (f"[CHAMP][{p_champName}] Champ obligatoire non renseigné{_liste_autorisee}.")
             _error = True
     if _error:
         if  p_liste != None:
@@ -132,7 +132,7 @@ def controleChamp(p_champName,p_champValue,p_champLenMax,p_champOBLIGATOIRE,
 
 def ChampManquant(p_nom,p_flag,p_liste=''):
     if p_flag==0 and p_liste is not None:
-        _error_string = f"[Structure incorrecte] : champ {p_nom} manquant."
+        _error_string = f"[Structure incorrecte] Champ {p_nom} manquant."
         p_liste.append(_error_string)
 
 
@@ -153,7 +153,6 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
 
     if len(p_lines)>0:
         _lines = p_lines
-        print(p_lines)
     else:
         # - le fichier existe ?
         _file = _repertoire + os.sep + _fichier
@@ -192,11 +191,11 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
 
     if _lines[0]!=K_HEADER_START:
         _liste_erreur.append("[ERROR] ce n'est pas un fichier obstacle")
-        return 10
+        return 99
 
     if _lines[_file_nb_lines-1]!=K_HEADER_END:
         _liste_erreur.append("[ERROR] ce n'est pas un fichier obstacle")
-        return 10
+        return 99
 
     # -- Initialisation des variables
     FLAG_NOM = 0
@@ -279,7 +278,7 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                 else:
                     _NbDebouche = 0
                     _error = True
-                    _error_string = f"[NBRDEBOUCHE] Valeur '{_value}' erronée."
+                    _error_string = f"[CHAMP][NBRDEBOUCHE] Valeur '{_value}' erronée."
                     _liste_erreur.append(_error_string)
                     break
 
@@ -374,7 +373,7 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                         OBS_PKDEBUT = StringToReal(_value) * 1000
                     else:
                         _error = True
-                        _error_string = f"[PKDEBUT] Valeur '{_value}' erronée."
+                        _error_string = f"[CHAMP][PKDEBUT] Valeur '{_value}' erronée."
                         _liste_erreur.append(_error_string)
 
             if _var == 'PKFIN':
@@ -386,7 +385,7 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                         OBS_PKFIN = StringToReal(_value) * 1000
                     else:
                         _error = True
-                        _error_string = f"[PKFIN] Valeur '{_value}' erronée."
+                        _error_string = f"[CHAMP][PKFIN] Valeur '{_value}' erronée."
                         _liste_erreur.append(_error_string)
 
             if _var == 'SITUATION':
@@ -447,7 +446,7 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                         date_obj = datetime.strptime(_value, date_format)
                     except:
                         _error = True
-                        _error_string = f"[DATERELEVE] Valeur '{_value}' non autorisée, format attendu JJ-MM-AAAA."
+                        _error_string = f"[CHAMP][DATERELEVE] Valeur '{_value}' non autorisée, format attendu JJ-MM-AAAA."
                         _liste_erreur.append(_error_string)
 
             if _var == 'NBRDEBOUCHE':
@@ -498,11 +497,11 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
 
                     if _int < 2 or _int > 200:
                         _error = True
-                        _error_string = f"[NBRSOMMET] Valeur '{_value}' non autorisée, compris en 2 et 200."
+                        _error_string = f"[CHAMP][NBRSOMMET] Valeur '{_value}' non autorisée, compris en 2 et 200."
                         _liste_erreur.append(_error_string)
 
     if not _mode_debouche and DEB_NBRSOMMET>0:
-        _liste_erreur.append("[DEBOUCHE N°1] tag non trouvé dans le fichier.")
+        _liste_erreur.append("[CHAMP][DEBOUCHE N°1] tag non trouvé dans le fichier.")
 
     _mode_debouche = False
 
@@ -530,7 +529,7 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
 
                         if not (_int == -1 or (_int >= 70 and _int <= 99999)):
                             _error = True
-                            _error_string = f"[COURBE GAUCHE] Valeur '{_value}' non autorisée, -1 ou compris en 70 et 99999."
+                            _error_string = f"[CHAMP][COURBE GAUCHE] Valeur '{_value}' non autorisée, -1 ou compris en 70 et 99999."
                             _liste_erreur.append(_error_string)
 
             # --- Courbe droite -1 ou 70 99999
@@ -544,7 +543,7 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                         DEB_COURBE_DROITE = _int
                         if not (_int == -1 or (_int >= 70 and _int <= 99999)):
                             _error = True
-                            _error_string = f"[COURBE DROITE] Valeur '{_value}' non autorisée, -1 ou compris en 70 et 99999."
+                            _error_string = f"[CHAMP][COURBE DROITE] Valeur '{_value}' non autorisée, -1 ou compris en 70 et 99999."
                             _liste_erreur.append(_error_string)
 
             if _var == 'SENSDEVERS':
@@ -593,20 +592,20 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                     _next_idx += 1
                     if _var in _set_sommet:
                         _error = True
-                        _error_string = f"[{_var}] déja présent."
+                        _error_string = f"[CHAMP][{_var}] déja présent."
                         _liste_erreur.append(_error_string)
                     else:
                         _set_sommet.add(_var)
                         _idx_temp = _var[6:]
                         if not MyisNumber(_idx_temp):
                             _error = True
-                            _error_string = f"[{_var}] format incorrect."
+                            _error_string = f"[CHAMP][{_var}] format incorrect."
                             _liste_erreur.append(_error_string)
                         else:
                             _idx = int(_idx_temp)
                             if _idx != _next_idx:
                                 _error = True
-                                _error_string = f"[{_var}] erreur de séquence dans la description de l'obstacle, attendu {_next_idx}."
+                                _error_string = f"[CHAMP][{_var}] erreur de séquence dans la description de l'obstacle, attendu {_next_idx}."
                                 _liste_erreur.append(_error_string)
                             else:
                                 _current_sommet = _idx
@@ -615,13 +614,13 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                                 _y = 0.0
                                 if '|' not in _value or len(_value.split("|")) != 2:
                                     _error = True
-                                    _error_string = f"[{_var}] format de donnée inconnue, attendu xxx.xxx|yyy.yyy."
+                                    _error_string = f"[CHAMP][{_var}] format de donnée inconnue, attendu xxx.xxx|yyy.yyy."
                                     _liste_erreur.append(_error_string)
                                 else:
                                     _data = _value.split("|")
                                     if not IsReal(_data[0]) or not IsReal(_data[1]):
                                         _error = True
-                                        _error_string = f"[{_var}] format de donnée inconnue, attendu xxx.xxx|yyy.yyy."
+                                        _error_string = f"[CHAMP][{_var}] format de donnée inconnue, attendu xxx.xxx|yyy.yyy."
                                         _liste_erreur.append(_error_string)
                                     else:
                                         # -- enfin les x et y semblent corrects
@@ -633,20 +632,20 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                 if _var[:6] == 'ENTITE':
                     if not (_var not in _set_entite):
                         _error = True
-                        _error_string = f"[{_var}] déja présent."
+                        _error_string = f"[CHAMP][{_var}] déja présent."
                         _liste_erreur.append(_error_string)
                     else:
                         _set_entite.add(_var)
                         _idx_temp = _var[6:]
                         if not MyisNumber(_idx_temp):
                             _error = True
-                            _error_string = f"[{_var}] format incorrect."
+                            _error_string = f"[CHAMP][{_var}] format incorrect."
                             _liste_erreur.append(_error_string)
                         else:
                             _idx = int(_idx_temp)
                             if _idx != _current_sommet:
                                 _error = True
-                                _error_string = f"[{_var}] erreur de séquence dans la description de l'obstacle, attendu {_current_sommet}."
+                                _error_string = f"[CHAMP][{_var}] erreur de séquence dans la description de l'obstacle, attendu {_current_sommet}."
                                 _liste_erreur.append(_error_string)
                             else:
                                 _current_entite = _idx_temp
@@ -709,24 +708,24 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
         if len(_liste_sommet) != DEB_NBRSOMMET:
             _error = True
             _error_2 = True
-            _liste_erreur.append(f"[DEBOUCHE] Nombre de SOMMETxxx <> nombre de sommets déclarés dans NBRSOMMET.")
+            _liste_erreur.append(f"[CHAMP][DEBOUCHE] Nombre de SOMMETxxx <> nombre de sommets déclarés dans NBRSOMMET.")
 
         if len(_liste_entite) != DEB_NBRSOMMET:
             _error = True
             _error_2 = True
-            _liste_erreur.append(f"[DEBOUCHE] Nombre de ENTITExxx <> nombre de sommets déclarés dans NBRSOMMET.")
+            _liste_erreur.append(f"[CHAMP][DEBOUCHE] Nombre de ENTITExxx <> nombre de sommets déclarés dans NBRSOMMET.")
 
         if not _error_2:
             # -- on regarde si la balise de fin est bien présente
             if _liste_entite[-1]['type'] != 'FIN':
-                _liste_erreur.append(f"[DEBOUCHE] Il manque la balise de fermeture ENTITTExxx=FIN.")
+                _liste_erreur.append(f"[CHAMP][DEBOUCHE] Il manque la balise de fermeture ENTITTExxx=FIN.")
 
             # -- on controle si pour chaque ENTITExxx il y a un SOMMETxxx
             for _idx in range(DEB_NBRSOMMET):
                 _entite = _liste_entite[_idx]['name']
                 _sommet = _liste_sommet[_idx]['name']
                 if _entite[6:] != _sommet[6:]:
-                    _liste_erreur.append(f"[DEBOUCHE] incohérence {_entite} et {_sommet}")
+                    _liste_erreur.append(f"[CHAMP][DEBOUCHE] incohérence {_entite} et {_sommet}")
 
             pass
 
