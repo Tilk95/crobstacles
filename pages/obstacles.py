@@ -17,6 +17,22 @@ def returnTagValue(p_tag_name,p_liste_tags):
     else:
         return "absent"
 
+
+def listeErrorToPanda(p_liste_errors,p_panda):
+    st.write("Errors")
+
+    _idx = 0
+
+    for _error in p_liste_errors:
+        _idx += 1
+        _value = {'CHAMP':_idx,'VALEUR':_error}
+#        p_panda.(_value)
+
+
+    st.write(p_panda)
+
+    pass
+
 def voirEnteteObstacle(p_liste_tags,p_error):
     st.divider()
     _color = 'green'
@@ -92,6 +108,8 @@ if uploaded_file is not None:
     _liste_sommet = []
     _liste_entite = []
 
+
+
     _return = crobstacles.controleObstacle("", "", string_datas, _liste_erreur, _liste_sommet, _liste_entite, _dico_tags)
 
     if _return == 99:
@@ -102,18 +120,58 @@ if uploaded_file is not None:
     if len(_liste_erreur) > 0:
         _error = True
 
+
     if _dico_tags is not None:
         voirEnteteObstacle(_dico_tags,_error)
 
 
     if len(_liste_erreur) > 0:
-        st.subheader("Liste des anomalies")
-        st.write(_liste_erreur)
-    st.subheader("Liste des champs dans le fichier")
-    st.write(string_datas)
+        pandaDFError = pd.DataFrame(columns=["TYPE",'VALEUR'])
+
+        _idx = 0
+
+        for _error in _liste_erreur:
+            _idx += 1
+            _record = []
+            _pos = _error.rfind(']')
+            _type = ''
+            _valeur = ''
+            if _pos>0:
+                _type = _error[0:_pos+1]
+            else:
+                _pos = 0
+            _valeur = _error[_pos+1:]
+
+            _record.append(_type)
+            _record.append(_valeur)
+
+            pandaDFError.loc[len(pandaDFError)] = _record
+
+
+#        listeErrorToPanda(_liste_erreur,pandaDFError)
+        st.subheader(f"Liste des anomalies ({len(_liste_erreur)})")
+#        st.write(_liste_erreur)
+        st.write(pandaDFError)
+
+
+    st.subheader(f"Contenu du fichier ({len(string_datas)} lignes)")
+
+    pandaDFObstacle = pd.DataFrame(columns=["LIGNE",'-'])
+    _idx = 0
+
+
+    for _ligne in string_datas:
+        _idx += 1
+        _record = []
+        _record.append(_ligne+100*' ')
+        _record.append('')
+        pandaDFObstacle.loc[len(pandaDFObstacle)] = _record
+
+
+    st.write(pandaDFObstacle)
     st.stop()
 
-pass
+    pass
 st.stop()
 
 
