@@ -62,10 +62,6 @@ def voirEnteteObstacle(p_liste_tags,p_error):
 
     st.markdown(_text)
 
-
-    st.divider()
-
-
 def isFileLF(p_lines):
     _return = True
     for _line in p_lines:
@@ -124,12 +120,13 @@ if uploaded_file is not None:
     if _dico_tags is not None:
         voirEnteteObstacle(_dico_tags,_error)
 
-
+# Si anomalies alors on affiche le tableau des anomalies
     if len(_liste_erreur) > 0:
+        _text = "## :red[Anomalie(s) détectée(s).] :sob:"
+        st.markdown(_text)
+
         pandaDFError = pd.DataFrame(columns=["TYPE",'VALEUR'])
-
         _idx = 0
-
         for _error in _liste_erreur:
             _idx += 1
             _record = []
@@ -147,28 +144,79 @@ if uploaded_file is not None:
 
             pandaDFError.loc[len(pandaDFError)] = _record
 
-
-#        listeErrorToPanda(_liste_erreur,pandaDFError)
         st.subheader(f"Liste des anomalies ({len(_liste_erreur)})")
-#        st.write(_liste_erreur)
-        st.write(pandaDFError)
+        st.dataframe(
+            pandaDFError,
+            hide_index=True,
+            column_config={
+                "TYPE": st.column_config.TextColumn(label="Typologie", width="small"),
+                "VALEUR": st.column_config.TextColumn(label="Description de l'erreur", width="large"),
+            },
+            use_container_width=True
+        )
+    else:
+        _text = "## :green[Pas d'anomalie détectée.] :+1:"
+        st.markdown(_text)
+
+        pass
+# Affichage du fichier OBSTACLE
+    st.divider()
+
+    tab1, tab2, tab3 = st.tabs([":blue[Fiche OBSTACLE]", ":blue[DEBOUCHE]", ":blue[REPRESENTATION GRAPHIQUE]"])
+
+    with tab1:
+        st.subheader(f"Contenu du fichier ({len(string_datas)} lignes)")
+        pandaDFObstacle = pd.DataFrame(columns=["LIGNE"])
+        _idx = 0
 
 
-    st.subheader(f"Contenu du fichier ({len(string_datas)} lignes)")
-
-    pandaDFObstacle = pd.DataFrame(columns=["LIGNE",'-'])
-    _idx = 0
-
-
-    for _ligne in string_datas:
-        _idx += 1
-        _record = []
-        _record.append(_ligne+100*' ')
-        _record.append('')
-        pandaDFObstacle.loc[len(pandaDFObstacle)] = _record
+        for _ligne in string_datas:
+            _idx += 1
+            _record = []
+            _record.append(_ligne)
+            pandaDFObstacle.loc[len(pandaDFObstacle)] = _record
 
 
-    st.write(pandaDFObstacle)
+        st.dataframe(pandaDFObstacle,use_container_width=True,hide_index=True)
+
+    with tab2:
+        st.subheader(f"DEBOUCHE ( {len(_liste_sommet)} sommets )")
+        pandaDFDebouche = pd.DataFrame(columns=["rang","nom","x","y","type"])
+
+        for _idx in range(len(_liste_sommet)):
+            _record = []
+            _record.append(_liste_sommet[_idx]["idx"])
+            _record.append(_liste_sommet[_idx]["name"])
+            _record.append(_liste_sommet[_idx]["x"])
+            _record.append(_liste_sommet[_idx]["y"])
+
+            try:
+                _record.append(_liste_entite[_idx]['type'])
+            except:
+                _record.append("")
+
+            pandaDFDebouche.loc[len(pandaDFDebouche)]=_record
+
+        st.dataframe(
+            pandaDFDebouche,
+            hide_index=True,
+            column_config={
+                "rang": st.column_config.TextColumn(width="small"),
+                "nom": st.column_config.TextColumn(width="small"),
+                "x": st.column_config.TextColumn(width="small"),
+                "y": st.column_config.TextColumn(width="small"),
+                "type": st.column_config.TextColumn(width="large"),
+            },
+            use_container_width=True
+        )
+
+    with tab3:
+       st.header("GRAPHIQUE")
+
+
+
+
+
     st.stop()
 
     pass
