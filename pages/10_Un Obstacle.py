@@ -7,7 +7,7 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
-st.header("CONTROLE DES FICHIERS OBSTACLES")
+st.header("Contrôler UN fichier obstacle :memo:")
 
 def returnTagValue(p_tag_name,p_liste_tags):
     if p_tag_name in p_liste_tags:
@@ -162,7 +162,7 @@ if uploaded_file is not None:
 # Affichage du fichier OBSTACLE
     st.divider()
 
-    tab1, tab2, tab3 = st.tabs([":blue[Fiche OBSTACLE]", ":blue[DEBOUCHE]", ":blue[REPRESENTATION GRAPHIQUE]"])
+    tab1, tab2 = st.tabs([":blue[Fiche OBSTACLE]", ":blue[DEBOUCHE]"])
 
     with tab1:
         st.subheader(f"Contenu du fichier ({len(string_datas)} lignes)")
@@ -209,13 +209,6 @@ if uploaded_file is not None:
             },
             use_container_width=True
         )
-
-    with tab3:
-       st.header("GRAPHIQUE")
-
-
-
-
 
     st.stop()
 
