@@ -654,7 +654,22 @@ def controleObstacle(p_repertoire,p_fichier,p_lines,p_liste_erreur,p_liste_somme
                                 if not _error:
                                     _record = {'line': _line_cpt, 'idx': _idx, 'name': _var, 'type': _value}
                                     _liste_entite.append(_record)
-            pass
+    # -----------------------------------------------------------------------------------
+    # contrôle des coordonnées
+    # -----------------------------------------------------------------------------------
+    if len(_liste_sommet) > 1:
+
+        for _idx in range(len(_liste_sommet)-1):
+            _x_n = _liste_sommet[_idx]["x"]
+            _y_n = _liste_sommet[_idx]["y"]
+
+            _x_n_suivant = _liste_sommet[_idx+1]["x"]
+            _y_n_suivant = _liste_sommet[_idx+1]["y"]
+
+            if (_x_n==_x_n_suivant) and (_y_n == _y_n_suivant):
+                _error = True
+                _error_string = f"[{_liste_sommet[_idx]['name']}][{_liste_sommet[_idx+1]['name']}] deux points successifs avec les mêmes coordonnées."
+                _liste_erreur.append(_error_string)
 
     # -----------------------------------------------------------------------------------
     # Test les données manquantes

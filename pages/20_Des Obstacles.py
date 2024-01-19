@@ -164,7 +164,8 @@ for uploaded_file in uploaded_files:
     # - les erreurs
     if len(_liste_erreur)>0:
         _record.append(str(len(_liste_erreur)))
-        _record.append(_liste_erreur)
+#        _record.append(_liste_erreur)
+        _record.append(';'.join(_liste_erreur))
     else:
         _record.append("")
         _record.append("")
@@ -182,7 +183,9 @@ else:
 
 st.markdown(_text)
 
+
 st.dataframe(
     pandaPDFiles,
     hide_index = False
 )
+
